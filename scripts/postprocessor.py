@@ -594,7 +594,7 @@ def compare_three_scenario(sc_ref, sc1, sc2,
        }
     
     # Making a dictionary of scenarios
-    scenarios = {x:y for x,y in zip([sc_ref, sc1, sc2] and  scenario_names)}
+    scenarios = {x:y for x,y in zip(scenario_names, [sc_ref, sc1, sc2])}
     
     # Reading emission factors from relations
     df_cc = sc1.par("relation_activity_time", {"relation": "CO2_cc"})
@@ -661,10 +661,10 @@ def compare_three_scenario(sc_ref, sc1, sc2,
         # Total CAS
         df_tot.loc["all", :] = df_tot.sum(axis=0)
         df_tot.index = [nodes[x] for x in df_tot.index]
-        d = df_tot["Reference"].copy()
-        for c in ["High-RE without SPHS", "High-RE with SPHS"]:
+        d = df_tot[scenario_names[0]].copy()
+        for c in [scenario_names[1], scenario_names[2]]:
             df_tot.loc[:, c] -= d.values
-        df_tot = df_tot.drop(["Reference"], axis=1)
+        df_tot = df_tot.drop([scenario_names[0]], axis=1)
     
         # Plot
         df_tot.plot(ax=ax, kind="bar", stacked=False, rot=0, width=0.7, edgecolor="k")
