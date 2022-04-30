@@ -1,6 +1,6 @@
 # central-asia-storage
 This repository hosts data and scripts used to build the energy-water system model of Central Asia,
-used in publication [Zakeri et al. (2022)] (https://doi.org/10.1016/j.est.2022.104587).
+used in publication [Zakeri et al., (2022)](https://doi.org/10.1016/j.est.2022.104587).
 This model is built using MESSAGEix, an open-source energy systems optimization framework, which has been
 long used for national, regional, and global integrated assessment and energy planning.
 For more information about the modeling tool, please see [MESSAGEix documentation](https://docs.messageix.org/en/stable/index.html).
@@ -37,15 +37,11 @@ for other energy carriers in the data presented for policy makers, as these are 
 
 ## How to build a water-energy model for Central Asia?
 In this repository, there are data and scripts that can help you for:
-- Building the water-energy model of Central Asia ([see tutorial for Baseline]
-(https://github.com/iiasa/central-asia-storage/scripts/interface_baseline.ipynb)) by using the data stored
+- Building the water-energy model of Central Asia ([see tutorial for Baseline](https://github.com/iiasa/central-asia-storage/scripts/interface_baseline.ipynb)) by using the data stored
 [here](https://github.com/iiasa/central-asia-storage/data).
-- Model renewable energy policies in the region ([see tutorial for Renewables]
-(https://github.com/iiasa/central-asia-storage/scripts/interface_renewable.ipynb)).
-- Model the functionality of seasonal pumped hydropower storage (SPHS) in the region ([see tutorial for Pumpedhydro]
-(https://github.com/iiasa/central-asia-storage/scripts/interface_pumpedhydro.ipynb)).
-- Represent carbon emissions targets in the region ([see here]
-(https://github.com/iiasa/central-asia-storage/scripts/interface_pumpedhydro.ipynb)).
+- Model renewable energy policies in the region ([see tutorial for Renewables](https://github.com/iiasa/central-asia-storage/scripts/interface_renewable.ipynb)).
+- Model the functionality of seasonal pumped hydropower storage (SPHS) in the region ([see tutorial for Pumpedhydro](https://github.com/iiasa/central-asia-storage/scripts/interface_pumpedhydro.ipynb)).
+- Represent carbon emissions targets in the region ([see here](https://github.com/iiasa/central-asia-storage/scripts/interface_pumpedhydro.ipynb)).
 - Analyze and visualize the scenarios mentioned above, and other scenarios that interest you.
 
 Please go through the tutorials with the order mentioned above. These tutorials are designed
