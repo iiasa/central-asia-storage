@@ -60,4 +60,13 @@ Please go through the tutorials with the order mentioned above. These tutorials 
 for those familiar with the MESSAGEix model. If you have recently started using MESSAGEix, please make yourself 
 familiar with [MESSAGEix tutorials](https://github.com/iiasa/message_ix/tree/main/tutorial/westeros), which are excellent examples for getting started.
 
+## License
+Copyright © 2018–2022 IIASA Energy, Climate, and Environment (ECE) Program
+
+The Central Asia model, including scripts and data is licensed under the Apache License, Version 2.0 ("The License); you can use the files in this repository freely only in compliance with the License. You may obtain a copy of the License at <http://www.apache.org/licenses/LICENSE-2.0>. In addition, you can cite the related publication when you use the model, scripts, and data in scientific work. You can extend the model, modify it for your own needs, and/or use data as you consider useful, as far as you cite the original reference properly.
+
+A proper citation is as follows:
+
+Zakeri, B., Hunt, J.D., Laldjebaev, M., Krey, V., Vinca, A., Parkinson, S., Riahi, K. (2022). **Role of energy storage in energy and water security in Central Asia**. *Journal of Energy Storage*, DOI: 10.1016/j.est.2022.104587.
+
 Please contact us if you have any questions or comments, either through Github or (zakeri@iiasa.ac.at).
