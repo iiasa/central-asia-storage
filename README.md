@@ -36,6 +36,10 @@ Hence, more information on the structure of the model can be found [here](https:
 ## What is unique about this project?
 This project analyzes the role of long duration storage in resolving tarsnboundary water and energy conflicts in Central Asia. The analysis combines a bottom-up GIS-based data of potential sites for building seasonal pumped hydropower storage (SPHS) with a system-level water-energy optimization model. We use the data of SPHS sites in Central Asia from a global analysis by [Hunt el al. 2020](https://www.nature.com/articles/s41467-020-14555-y). This global dataset is freely available as a map showing different sites and their estimated costs ([see this link](https://www.google.com/maps/d/u/0/viewer?mid=1O9aK_dTL3mDOgLgY2G0BSgmlHqRNSlHA&ll=39.428912967790694%2C67.41181640624998&z=6)). The energy-water system model is then used to analyze the role of SPHS compared to other alternatives in future high renewable scenarios in the region.
 
+|Figure 1: Map of seasonal pumped hydro power storage projects in Central Asia
+|:--:|
+|![](https://github.com/iiasa/central-asia-storage/scripts/_static/sphs_projects.jpg)|
+
 ## How to check the input data?
 You can find all the data used for building this model under the folder ["data"](https://github.com/iiasa/central-asia-storage/data).
 There is a complete version of data for modeling, and a shorter version for policy makers (labeled as "summary"). Please check the "definition" file before working with each dataset. While values are the same in the two Excel data files, the units are slightly different. For example, the unit of energy in the model
