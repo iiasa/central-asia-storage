@@ -1,10 +1,18 @@
 from itertools import product
 
-def add_share_activity(sc, relation, tec_share, tec_total, shares, regions,
-                       remove_old=True,
-                       bounds=[("relation_lower_time", 0)],
-                       parname="relation_activity_time"):
-    '''
+
+def add_share_activity(
+    sc,
+    relation,
+    tec_share,
+    tec_total,
+    shares,
+    regions,
+    remove_old=True,
+    bounds=[("relation_lower_time", 0)],
+    parname="relation_activity_time",
+):
+    """
     Adds share constraints through user-defined relations.
 
     Parameters
@@ -28,10 +36,10 @@ def add_share_activity(sc, relation, tec_share, tec_total, shares, regions,
     parname : string, optional
         Parameter of relations. The default is "relation_activity_time".
 
-    '''
+    """
     if relation in set(sc.set("relation")) and remove_old:
         sc.remove_set("relation", relation)
-    sc.add_set("relation", relation)  
+    sc.add_set("relation", relation)
     # If tec share in tec total
     tec_tot = [x for x in tec_total if x not in tec_share]
     tec_tot_share = [x for x in tec_total if x in tec_share]
@@ -44,8 +52,9 @@ def add_share_activity(sc, relation, tec_share, tec_total, shares, regions,
                 continue
             else:
                 mode = df["mode"][0]
-            sc.add_par(parname,
-                       [relation, node, yr, node, tec, yr, mode, "year"], -val, "-")
+            sc.add_par(
+                parname, [relation, node, yr, node, tec, yr, mode, "year"], -val, "-"
+            )
         # Share technologies
         for tec, node in product(tec_share, regions):
             # Check if technology has output in this node and year
@@ -54,13 +63,15 @@ def add_share_activity(sc, relation, tec_share, tec_total, shares, regions,
                 continue
             else:
                 mode = df["mode"][0]
-                
+
             # If technology in "share" is in "total" too or not
             coefficient = 1 - val if tec in tec_tot_share else 1
-            sc.add_par(parname,
-                       [relation, node, yr, node, tec, yr, mode, "year"],
-                       coefficient, "-")
+            sc.add_par(
+                parname,
+                [relation, node, yr, node, tec, yr, mode, "year"],
+                coefficient,
+                "-",
+            )
         # Bound of relation
         for node, (bound, num) in product(regions, bounds):
             sc.add_par(bound, [relation, node, yr, "year"], num, "-")
-

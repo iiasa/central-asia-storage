@@ -1,6 +1,5 @@
 import pandas as pd
 from matplotlib import pyplot as plt
-import os
 
 # 1) Input data for plotting related to names and colors
 unit_to_TWh = 8760 / 1000  # from Gwa to TWh
@@ -8,17 +7,17 @@ unit_to_TWh = 8760 / 1000  # from Gwa to TWh
 # Dicitonary for renaming
 # Interconnectors
 el_exp = [
-    'elec_exp_kaz-uzb',
-    'elec_exp_uzb-kaz',
-    'elec_exp_kaz-kgz',
-    'elec_exp_kgz-kaz',
-    'elec_exp_kgz-tjk',
-    'elec_exp_tjk-kgz',
-    'elec_exp_kgz-uzb',
-    'elec_exp_uzb-kgz',
-    'elec_exp_tjk-uzb',
-    'elec_exp_uzb-tjk',
-    ]
+    "elec_exp_kaz-uzb",
+    "elec_exp_uzb-kaz",
+    "elec_exp_kaz-kgz",
+    "elec_exp_kgz-kaz",
+    "elec_exp_kgz-tjk",
+    "elec_exp_tjk-kgz",
+    "elec_exp_kgz-uzb",
+    "elec_exp_uzb-kgz",
+    "elec_exp_tjk-uzb",
+    "elec_exp_uzb-tjk",
+]
 
 # Grouping technologies based on fuel
 rename_tec = {
@@ -62,7 +61,7 @@ nodes = {
 tec_list = []
 for key, var in rename_tec.items():
     tec_list = tec_list + var
-    
+
 
 # A utility function for fetching data of a parameter or variable
 def read_var(
@@ -78,6 +77,40 @@ def read_var(
     year_result=None,
     groupby="year",
 ):
+    """
+    A function for postprocessing a variable or parameter and generating simple
+    tables from the model data.
+
+    Parameters
+    ----------
+    sc : message_ix.Scenario
+    variable : string
+        Name of variable or parameter.
+    tec_list : list
+        List of technologies to be processed.
+    time : list, optional
+        List of timeslices to be processed. The default is ["year"].
+    node : list or "all", optional
+        List of nodes to be processed. The default is "all".
+    year_col : string, optional
+        Index name for year. The default is "year_act".
+    rename_tec : dict, optional
+        Dictionary for renaming technologies. The default is {}.
+    year_min : int, optional
+        Minimum year of data. The default is 2020.
+    year_max : int, optional
+        Maximum year of data. The default is 2050.
+    year_result : int or None, optional
+        Showing the results for only one year. The default is None.
+    groupby : string, optional
+        Method for grouping the results (by "time" or "year"). The default is "year".
+
+    Returns
+    -------
+    df : DataFrame
+        Table fo the processed data.
+
+    """
     # Nodes
     if node == "all":
         node = [x for x in sc.set("node") if x != "World"]
@@ -134,8 +167,8 @@ def read_var(
 
 
 def equal_pump(act, times):
-    '''
-    Equalizing extra act from pump and turbine in one time (balancing services)
+    """
+    Equalizing extra act from pump and turbine in one time (balancing services).
 
     Parameters
     ----------
@@ -143,7 +176,7 @@ def equal_pump(act, times):
         activity data.
     times : list
         sub-annual timelsices.
-    '''
+    """
     for t in times:
         p = (act["time"] == t) & (act["technology"] == "pump")
         pu = act.loc[p, "lvl"]
@@ -162,34 +195,50 @@ def equal_pump(act, times):
 
 
 def monthly_plot(sc, path, node="TJK", yr=2050, pumped_hydro=True):
-    '''
-    Input data for the plotting related to node selection for PHS
-    '''
-    if node not in ["TJK", "KGZ"]:
-        print("Notice: there is no pumped hydro or reservoir hydro in",
-              "the slected node {}.".format(node))
+    """
+    Generate plots at the sub-annual timeslice level for one year.
+
+    Parameters
+    ----------
+    sc : message_ix.Scenario
+    path : string or path
+        Path for dumping the output results in Excel.
+    node : string, optional
+        Model region to be processed. The default is "TJK".
+    yr : int, optional
+        Model year to be processed. The default is 2050.
+    pumped_hydro : bool, optional
+        If pumpedhydro to be included in the results. The default is True.
+
+    """
+
+    if node not in ["TJK", "KGZ"] and pumped_hydro:
+        print(
+            "Notice: there is no pumped hydro or reservoir hydro in",
+            "the slected node {}.".format(node),
+        )
     if node == "TJK":
         river = "amu"
     elif node == "KGZ":
         river = "siri"
-    
+
     # Time slices
     times = [x for x in sc.set("time") if x != "year"]
-    
+
     inflow_tecs = [x for x in sc.set("technology") if "inflow_up" in x and river in x]
     water_com = [x for x in sc.set("commodity") if "water-" in x and river in x]
-    
+
     # Storage technology: 'hydro_dam': reservoir hydro, 'hydro_pump': pumped hydro
     if pumped_hydro:
         tec_li = ["turbine", "pump"] + inflow_tecs
     else:
         tec_li = ["turbine_dam"] + inflow_tecs
 
-
     # 1) Plotting activity of different technologies for water
     act = (
         sc.var(
-            "ACT", {"node_loc": node, "technology": tec_li, "year_act": yr, "time": times}
+            "ACT",
+            {"node_loc": node, "technology": tec_li, "year_act": yr, "time": times},
         )
         .groupby(["time", "technology"])
         .sum()
@@ -203,13 +252,13 @@ def monthly_plot(sc, path, node="TJK", yr=2050, pumped_hydro=True):
             y = -y
         if not y.empty:
             plt.step(times, y, label=tec, where="mid")
-    
+
     # Laying demand on the same plot
     dem = sc.par(
         "demand", {"node": node, "commodity": water_com, "year": yr, "time": times}
     )
     plt.step(dem["time"], dem["value"], label="demand", where="mid")
-    
+
     # Adding legend
     plt.legend(loc="upper right", ncol=2)
     plt.title("Water demand and activity of storage technologies in {}".format(yr))
@@ -244,17 +293,15 @@ def monthly_plot(sc, path, node="TJK", yr=2050, pumped_hydro=True):
         c = color_map[tec]
         if tec == "pumped hydro":
             tec = "PHS-discharge"
-    
-        # if tec == 'reservoir hydro':
-        #     y['lvl'] = [0.5, 0.3, 0.7, 0.8, 1.5, 2, 1.6, 2.1, 1.8, 1.6, 1.4, 1]
+
         if tec == "export":
             y = -y
         plt.step(times, y, label=tec, where="mid", color=c)
-    
+
     # For pump and exports with negative values
     y = act.loc[act["technology"] == "pump", "lvl"]
     plt.step(times, -y, label="PHS-charge", where="mid", color="red")
-    
+
     # Laying demand on the same plot
     y = act.loc[act["technology"] == "elec_t_d", "lvl"]
     plt.step(dem.index, y, label="demand", where="mid", color="brown")
@@ -271,17 +318,21 @@ def monthly_plot(sc, path, node="TJK", yr=2050, pumped_hydro=True):
     ).get_frame()
     leg.set_linewidth(1)
     leg.set_edgecolor("black")
-    
+
     plt.title("Electricity demand and supply (TWh) in {} in {}".format(nodes[node], yr))
     plt.xlabel("Month of year")
     # Saving the file
     fig.savefig(path + "\\" + sc.scenario + "_" + "monthly_" + str(yr))
-    
+
     # 3) A fig for electricity trade
     fig = plt.figure("trade")
-    trade = pd.DataFrame(index=times, columns=pd.MultiIndex.from_product(
-        [[x for x in nodes.keys() if x != "all"], ["Import", "Export"]],
-        names=["Country", "Direction"]))
+    trade = pd.DataFrame(
+        index=times,
+        columns=pd.MultiIndex.from_product(
+            [[x for x in nodes.keys() if x != "all"], ["Import", "Export"]],
+            names=["Country", "Direction"],
+        ),
+    )
     for (node, direct) in trade.columns:
         if direct == "Import":
             tec_l = ["elec_imp"]
@@ -300,16 +351,16 @@ def monthly_plot(sc, path, node="TJK", yr=2050, pumped_hydro=True):
             .groupby(["time"])
             .sum()
             .reset_index()
-            )
+        )
         act["time"] = [int(x) for x in act["time"]]
         act = act.sort_values(["time"])
         act["lvl"] *= unit_to_TWh
         if direct == "Import":
             act["lvl"] *= -1
         trade.loc[:, (node, direct)] = act["lvl"].values
-        
+
         plt.step(trade.index, act["lvl"].values, label=(node, direct), where="mid")
-    
+
     # Adding legend
     ax = plt.gca()
     leg = ax.legend(
@@ -322,14 +373,13 @@ def monthly_plot(sc, path, node="TJK", yr=2050, pumped_hydro=True):
     ).get_frame()
     leg.set_linewidth(1)
     leg.set_edgecolor("black")
-    
+
     plt.title("Electricity trade (TWh) in {}".format(yr))
     plt.xlabel("Month of year")
 
-# %%
-def yearly_plot(sc, path, plot_type="activity", region="all",
-                aggregate="all"):
-    '''
+
+def yearly_plot(sc, path, plot_type="activity", region="all", aggregate="all"):
+    """
     Plotting yearly values over multiple decades
 
     Parameters
@@ -343,12 +393,12 @@ def yearly_plot(sc, path, plot_type="activity", region="all",
         list of model regions to be visualized
     aggregate: string
         adding the aggregate of all regions
-    '''
+    """
     # Check if solution exists
     if not sc.has_solution():
         print("Notice: the submitted scenario has no solution!!!")
         return []
-    
+
     # Selection between activity and capacity
     if plot_type == "activity":
         variable = ["ACT", "activity"]
@@ -364,18 +414,18 @@ def yearly_plot(sc, path, plot_type="activity", region="all",
         ylab = "GW"
         if path:
             writer = pd.ExcelWriter(path + "\\capacity.xlsx")
-    
+
     dict_xls = {}
-    
+
     # Regions
     if region == "all":
         region = [x for x in sc.set("node") if x not in ["World", "CAS"]]
-    
+
     if aggregate:
         region = region + [aggregate]
-    
+
     # Subplots
-    height = int(len(region)) if len(region) % 2 != 0 else int(len(region)/2)
+    height = int(len(region)) if len(region) % 2 != 0 else int(len(region) / 2)
     breath = 1 if len(region) % 2 != 0 else 2
     fig, axes = plt.subplots(height, breath, figsize=(breath * 4, 3 * height))
     fig.subplots_adjust(bottom=0.15, wspace=0.3, hspace=0.5)
@@ -393,17 +443,17 @@ def yearly_plot(sc, path, plot_type="activity", region="all",
         d.index.name = "Year"
         if plot_type == "activity":
             d *= unit_to_TWh
-    
+
         # Making export with negative sign
         if "export" in d.columns:
             d["export"] = -d["export"]
         # Removing import/export from Central Asia as a whole
         if node == "all":
             d.loc[:, d.columns.isin(["import", "export"])] = 0
-    
+
         # For writing to xls
         dict_xls[nodes[node]] = d
-    
+
         # Plot
         d.plot(
             ax=ax,
@@ -414,7 +464,7 @@ def yearly_plot(sc, path, plot_type="activity", region="all",
             color=color_map,
             edgecolor="k",
         )
-    
+
         # Title and label
         ax.set_title(nodes[node], fontsize=11)
         ax.set_ylabel(ylab, fontsize=10)
@@ -422,7 +472,7 @@ def yearly_plot(sc, path, plot_type="activity", region="all",
             ax.get_legend().remove()
         # Adding a line at zero
         ax.axhline(0, color="black", linewidth=0.5)
-    
+
     # legend
     if len(region) > 1:
         pos = (0.5, -0.55)
@@ -437,7 +487,7 @@ def yearly_plot(sc, path, plot_type="activity", region="all",
         leg.set_linewidth(1)
         leg.set_edgecolor("black")
     plt.show()
-    
+
     # Saving the file
     fig.savefig(path + "\\" + sc.scenario + "_" + variable[1])
 
@@ -455,10 +505,10 @@ def yearly_plot(sc, path, plot_type="activity", region="all",
         df.to_excel(writer, sheet_name=sh)
     writer.save()
     writer.close()
-    
+
 
 def cost_emission_plot(sc, name="Baseline", max_yr=2055):
-    '''
+    """
     Generate cost and emission plots.
 
     Parameters
@@ -469,9 +519,9 @@ def cost_emission_plot(sc, name="Baseline", max_yr=2055):
     max_yr : int, optional
         Maximum year to be shown in the plot. The default is 2055.
 
-    '''
+    """
     tit = "Total costs and GHG emissions"
-    
+
     # Retreiving CO2 emission factors
     df_cc = sc.par("relation_activity_time", {"relation": "CO2_cc"})
     df_cc = (
@@ -497,17 +547,18 @@ def cost_emission_plot(sc, name="Baseline", max_yr=2055):
     f = 0
     for ax, varname in zip(axes.reshape(-1), var_list.keys()):
         f = f + 1
-    
+
         df_tot = pd.DataFrame()
         if "COST_NODAL_NET" in varname:
             df = sc.var(varname)
             yr_col = "year"
             node_col = "node"
             # Sorting and averaging
-            df = df.loc[(df[yr_col] > 2015) &
-                        (df[yr_col] < max_yr) &
-                        (df[node_col].isin(nodes.keys()))].set_index(
-                            [node_col, yr_col])["lvl"]
+            df = df.loc[
+                (df[yr_col] > 2015)
+                & (df[yr_col] < max_yr)
+                & (df[node_col].isin(nodes.keys()))
+            ].set_index([node_col, yr_col])["lvl"]
             if "NET" in varname:
                 df *= 1000
         elif varname == "EMISS":
@@ -518,8 +569,11 @@ def cost_emission_plot(sc, name="Baseline", max_yr=2055):
 
             # Sorting and averaging
             df = (
-                df.loc[(df[yr_col] > 2015) &
-                       (df[yr_col] < 2055) & (df[node_col].isin(nodes.keys()))]
+                df.loc[
+                    (df[yr_col] > 2015)
+                    & (df[yr_col] < 2055)
+                    & (df[node_col].isin(nodes.keys()))
+                ]
                 .groupby([node_col, "technology", yr_col])
                 .sum()["lvl"]
             )
@@ -537,11 +591,11 @@ def cost_emission_plot(sc, name="Baseline", max_yr=2055):
 
         df = df.unstack(yr_col).mean(axis=1)
         df_tot[name] = df
-    
+
         # Total CAS
         df_tot.loc["all", :] = df_tot.sum(axis=0)
         df_tot.index = [nodes[x] for x in df_tot.index]
-    
+
         # Plot
         df_tot.plot(ax=ax, kind="bar", stacked=False, rot=0, width=0.7, edgecolor="k")
         res[varname] = df_tot
@@ -552,7 +606,7 @@ def cost_emission_plot(sc, name="Baseline", max_yr=2055):
             ax.get_legend().remove()
         # Adding a line at zero
         ax.axhline(0, color="black", linewidth=0.5)
-    
+
         # legend
         # pos = (1.15, 0.5)        # legend low = (1.65, 1.75)
         leg = ax.legend(
@@ -566,58 +620,69 @@ def cost_emission_plot(sc, name="Baseline", max_yr=2055):
         leg.set_linewidth(1)
         leg.set_edgecolor("black")
     plt.show()
-    
 
-def compare_three_scenario(sc_ref, sc1, sc2,
-                           scenario_names=["Reference", "Scenario 1", "Scenario 2"],
-                           ):
-    '''
+
+def compare_scenarios(
+    scenarios={},
+    emission_from_relations=True,
+    min_yr=2015,
+    max_yr=2055,
+    unit_conversion=44 / 12,  # converting MtC to MtCO2
+):
+    """
     Comparing different scenarios on some output variables (costs, emissions).
     Difference of scenario 1 and scenario 2 compared to reference.
 
     Parameters
     ----------
-    sc_ref : message_ix.Scenario
-        Reference scenario for comparison.
-    sc1 : message_ix.Scenario
-        First scenario to be compared.
-    sc2 : message_ix.Scenario
-        Second scenario to be compared. 
-    scenario_names : list of strings
-        Name of scenarios.
-    '''
-    
+    scenarios : dict
+        A dictionary with the scenario names as keys and scenario objects as values.
+        Example: {"Reference": sc_ref, "Scenario 1": sc1, "Scenario 2": sc2}
+        The first scenario will be used as the basis for comparison.
+    emission_from_relations : bool
+        A flag, if True, for using relations for emission factors.
+        if False, parameter "emission_factor" will be used for emission factors.
+    min_yr : int
+        Minimum year for visualization.
+    max_yr : int
+        Maximum year for visualization.
+    unit_conversion : float
+        Conversion from model units for CO2 emissions to MtCO2
+    """
+
     tit = "Total costs and GHG emissions in different scenarios"
     var_list = {
         "COST_NODAL_NET": "Change in total costs of energy system (million $/year) relative to Baseline",
         "EMISS": "Change in total GHG emissions (MtCO2-eq/year) relative to Baseline",
-       }
-    
-    # Making a dictionary of scenarios
-    scenarios = {x:y for x,y in zip(scenario_names, [sc_ref, sc1, sc2])}
-    
+    }
+
+    # Reference scenario and its name
+    reference = [x for x in scenarios.keys()][0]
+    sc_ref = scenarios[reference]
+
     # Reading emission factors from relations
-    df_cc = sc1.par("relation_activity_time", {"relation": "CO2_cc"})
-    df_cc = (
-        df_cc.groupby(["technology", "year_act", "node_loc"])
-        .sum()
-        .drop(["year_rel"], axis=1)
-        .sort_index()
-    )
+    if emission_from_relations:
+        df_cc = sc_ref.par("relation_activity_time", {"relation": "CO2_cc"})
+        df_cc = (
+            df_cc.groupby(["technology", "year_act", "node_loc"])
+            .sum()
+            .drop(["year_rel"], axis=1)
+            .sort_index()
+        )
     # List of power plants
-    tec_list = sc1.par("output", {"commodity": "electr", "level": "secondary"})[
+    tec_list = sc_ref.par("output", {"commodity": "electr", "level": "secondary"})[
         "technology"
-        ].unique()
+    ].unique()
     fig, axes = plt.subplots(2, 1, figsize=(9, 8))
     fig.subplots_adjust(bottom=0.15, wspace=0.3, hspace=0.5)
     fig.suptitle(tit, fontweight="bold", position=(0.5, 0.95))
     f = 0
-    
+
     # Collecting results in a loop
     res = {}
     for ax, varname in zip(axes.reshape(-1), var_list.keys()):
         f = f + 1
-    
+
         df_tot = pd.DataFrame()
         for name, scen in scenarios.items():
             if "COST_NODAL_NET" in varname:
@@ -625,21 +690,30 @@ def compare_three_scenario(sc_ref, sc1, sc2,
                 yr_col = "year"
                 node_col = "node"
                 # Sorting and averaging
-                df = df.loc[(df[yr_col] > 2015) &
-                            (df[yr_col] < 2055) &
-                            (df[node_col].isin(nodes.keys()))].set_index(
-                                [node_col, yr_col])["lvl"]
+                df = df.loc[
+                    (df[yr_col] > 2015)
+                    & (df[yr_col] < 2055)
+                    & (df[node_col].isin(nodes.keys()))
+                ].set_index([node_col, yr_col])["lvl"]
                 if "NET" in varname:
                     df *= 1000
             elif varname == "EMISS":
-                df = scen.var(varname, {"emission": "TCE", "type_tec": "all"})
-                df = scen.var("ACT", {"technology": tec_list, "time": "year"})
-                yr_col = "year_act"
-                node_col = "node_loc"
+                if emission_from_relations:
+                    df = scen.var("ACT", {"technology": tec_list, "time": "year"})
+                    yr_col = "year_act"
+                    node_col = "node_loc"
+                else:
+                    df = scen.var(varname, {"emission": "TCE", "type_tec": "all"})
+                    yr_col = "year"
+                    node_col = "node"
+
                 # Sorting and averaging
                 df = (
-                    df.loc[(df[yr_col] > 2015) &
-                           (df[yr_col] < 2055) & (df[node_col].isin(nodes.keys()))]
+                    df.loc[
+                        (df[yr_col] > min_yr)
+                        & (df[yr_col] < max_yr)
+                        & (df[node_col].isin(nodes.keys()))
+                    ]
                     .groupby([node_col, "technology", yr_col])
                     .sum()["lvl"]
                 )
@@ -648,24 +722,29 @@ def compare_three_scenario(sc_ref, sc1, sc2,
                     .set_index(["technology", yr_col, node_col])
                     .sort_index()
                 )
-                df = df.loc[df.index.isin(df_cc.index)].copy()
-                df["lvl"] *= df_cc["value"]
-    
+                if emission_from_relations:
+                    df = df.loc[df.index.isin(df_cc.index)].copy()
+                    df["lvl"] *= df_cc["value"]
+
                 df["lvl"] = df["lvl"].fillna(0)
                 df = df.reset_index().groupby([node_col, yr_col]).sum()
-                df["lvl"] *= 44 / 12  # converting MtC to MtCO2
-    
+                df["lvl"] *= unit_conversion
+
             df = df.unstack(yr_col).mean(axis=1)
             df_tot[name] = df
-    
+
         # Total CAS
         df_tot.loc["all", :] = df_tot.sum(axis=0)
         df_tot.index = [nodes[x] for x in df_tot.index]
-        d = df_tot[scenario_names[0]].copy()
-        for c in [scenario_names[1], scenario_names[2]]:
+
+        # Values of reference scenario
+        d = df_tot[reference].copy()
+
+        # Other scenarios
+        for c in [x for x in scenarios.keys() if x != reference]:
             df_tot.loc[:, c] -= d.values
-        df_tot = df_tot.drop([scenario_names[0]], axis=1)
-    
+        df_tot = df_tot.drop([reference], axis=1)
+
         # Plot
         df_tot.plot(ax=ax, kind="bar", stacked=False, rot=0, width=0.7, edgecolor="k")
         res[varname] = df_tot
@@ -675,7 +754,7 @@ def compare_three_scenario(sc_ref, sc1, sc2,
             ax.get_legend().remove()
         # Adding a line at zero
         ax.axhline(0, color="black", linewidth=0.5)
-    
+
         # legend
         leg = ax.legend(
             loc="best",
