@@ -1,14 +1,14 @@
 # A water flow and energy system model for Central Asia
-This repository hosts data and scripts used to build the energy-water system model of Central Asia,
+This repository hosts data and scripts used to build the water-energy system model of Central Asia,
 used for the analysis by [Zakeri et al., (2022)](https://doi.org/10.1016/j.est.2022.104587).
-This model is built using MESSAGEix, an open-source energy systems optimization framework, which has been
-long used for national, regional, and global integrated assessment and energy planning.
+This model is developed using MESSAGEix, an open-source energy systems optimization framework, which has been
+long used for national, regional, and global integrated assessment and energy planning projects.
 For more information about the modeling tool, please see [MESSAGEix documentation](https://docs.messageix.org/en/stable/index.html).
 
 The purpose of this Github project is to share the model and data openly with interested users
 with the hope that this can be useful for their analysis, further development of the model,
 and/or receiving feedback. Please use Github features "issues" and "pull-requests" directly,
-if you want to suggest improvements in the code and update the data.
+if you want to suggest improvements in the code presented here and if you want to help update the data.
 For other matters please contact (zakeri@iiasa.ac.at).
 
 ## What to do next?
@@ -34,7 +34,7 @@ The model is built based on standard model structure of IIASA's MESSAGEix-GLOBIO
 Hence, more information on the structure of the model can be found [here](https://docs.messageix.org/projects/global/en/latest/).
 
 ## What is unique about this project?
-This project analyzes the role of long duration storage in resolving trasnboundary water and energy conflicts in Central Asia. The analysis combines a bottom-up GIS-based data of potential sites for building seasonal pumped hydropower storage (SPHS) with a system-level water-energy optimization model. We use the data of SPHS sites in Central Asia from a global analysis by [Hunt el al. 2020](https://www.nature.com/articles/s41467-020-14555-y). This global dataset is freely available as a map showing different sites and their estimated costs ([see this link](https://www.google.com/maps/d/u/0/viewer?mid=1O9aK_dTL3mDOgLgY2G0BSgmlHqRNSlHA&ll=39.428912967790694%2C67.41181640624998&z=6)). The energy-water system model is then used to analyze the role of SPHS compared to other alternatives in future high renewable scenarios in the region.
+This project analyzes the role of long duration storage in resolving transboundary water and energy conflicts in Central Asia. The analysis combines a bottom-up GIS-based data of potential sites for building seasonal pumped hydropower storage (SPHS) with a system-level water-energy optimization model. We use the data of SPHS sites in Central Asia from a global analysis by [Hunt el al. 2020](https://www.nature.com/articles/s41467-020-14555-y). This global dataset is freely available as a map showing different sites and their estimated costs ([see this link](https://www.google.com/maps/d/u/0/viewer?mid=1O9aK_dTL3mDOgLgY2G0BSgmlHqRNSlHA&ll=39.428912967790694%2C67.41181640624998&z=6)). The energy-water system model is then used to analyze the role of SPHS compared to other alternatives in future high renewable scenarios in the region.
 
 |Figure 1: Map of seasonal pumped hydropower storage projects in Central Asia
 |:--:|
@@ -68,5 +68,8 @@ The Central Asia model, including scripts and data is licensed under the Apache 
 A proper citation is as follows:
 
 Zakeri, B., Hunt, J.D., Laldjebaev, M., Krey, V., Vinca, A., Parkinson, S., Riahi, K. (2022). **Role of energy storage in energy and water security in Central Asia**. *Journal of Energy Storage*, DOI: 10.1016/j.est.2022.104587.
+
+## Acknowledgments
+The model presented here is based on the collective efforts of many contributors from International Institute for Applied Systems Analysis (IIASA). The main collaborators to the model and underlying software framework in this project include Julian Hunt, Adriano Vinca, Volker Krey, Oliver Fricko, Paul Kishimoto, Daniel Huppmann, Holger Rogner, and Maarten Brinkerink. 
 
 Please contact us if you have any questions or comments, either through Github or (zakeri@iiasa.ac.at).
