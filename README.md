@@ -69,7 +69,7 @@ A proper citation is as follows:
 
 Zakeri, B., Hunt, J.D., Laldjebaev, M., Krey, V., Vinca, A., Parkinson, S., Riahi, K. (2022). **Role of energy storage in energy and water security in Central Asia**. *Journal of Energy Storage*, DOI: 10.1016/j.est.2022.104587.
 
-## Acknowledgments
-The model presented here is based on the collective efforts of many contributors from International Institute for Applied Systems Analysis (IIASA). The main collaborators to the model and underlying software framework in this project include Julian Hunt, Adriano Vinca, Volker Krey, Oliver Fricko, Paul Kishimoto, Daniel Huppmann, Holger Rogner, and Maarten Brinkerink. 
+## Contributors
+The model presented here is based on the collective efforts of many contributors from International Institute for Applied Systems Analysis (IIASA). The main collaborators to the model development and underlying software framework in this project include Behnam Zakeri, Julian Hunt, Adriano Vinca, Volker Krey, Oliver Fricko, Paul Kishimoto, Daniel Huppmann, Holger Rogner, Maarten Brinkerink, and many others. 
 
 Please contact us if you have any questions or comments, either through Github or (zakeri@iiasa.ac.at).
