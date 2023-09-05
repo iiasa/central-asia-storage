@@ -13,7 +13,7 @@ For other matters please contact (zakeri@iiasa.ac.at).
 
 ## What to do next?
 - Please read the [publication](https://doi.org/10.1016/j.est.2022.104587) to learn about the proposed solution and the model structure and assumptions.
-- If you are interested in the data, please check [the folder of data](https://github.com/iiasa/central-asia-storage/data) in this project (see more details in Section "How to check the input data?" below).
+- If you are interested in the data, please check [the folder of data](https://github.com/iiasa/central-asia-storage/blob/main/data) in this project (see more details in Section "How to check the input data?" below).
 - If you are interested in building an energy systems model of the Central Asia region, please use the scripts and data in this project (see Section "How to build a water-energy model for Central Asia?" below).
 
 ## Description of the model
@@ -42,18 +42,18 @@ This project analyzes the role of long duration storage in resolving transbounda
 | For more details on color codes and project sites, please refer to [this map](https://www.google.com/maps/d/u/0/viewer?mid=1O9aK_dTL3mDOgLgY2G0BSgmlHqRNSlHA&ll=39.428912967790694%2C67.41181640624998&z=6).
 
 ## How to check the input data?
-You can find all the data used for building this model under the folder ["data"](https://github.com/iiasa/central-asia-storage/data).
+You can find all the data used for building this model under the folder ["data"](https://github.com/iiasa/central-asia-storage/blob/main/data).
 There is a complete version of data for modeling, and a shorter version for policy makers (labeled as "summary"). Please check the "definition" file before working with each dataset. While values are the same in the two Excel data files, the units are slightly different. For example, the unit of energy in the model
 data is GWa (Gigawatt-annum, equal to 8.76 TWh), as this is easier for the model parameterization. However, this unit is TWh for electricity and PJ
 for other energy carriers in the data presented for policy makers, as these are more familiar units in national energy balances and statistics.
 
 ## How to build a water-energy model for Central Asia?
 In this repository, there are data and scripts that can help you for:
-- Building the water-energy model of Central Asia ([see tutorial for Baseline](https://github.com/iiasa/central-asia-storage/scripts/interface_baseline.ipynb)) by using the data stored
-[here](https://github.com/iiasa/central-asia-storage/data).
-- Model renewable energy policies in the region ([see tutorial for Renewables](https://github.com/iiasa/central-asia-storage/scripts/interface_policy.ipynb)).
-- Model the functionality of seasonal pumped hydropower storage (SPHS) in the region ([see tutorial for Pumpedhydro](https://github.com/iiasa/central-asia-storage/scripts/interface_pumpedhydro.ipynb)).
-- Represent carbon emissions targets in the region ([see here](https://github.com/iiasa/central-asia-storage/scripts/interface_pumpedhydro.ipynb)).
+- Building the water-energy model of Central Asia ([see tutorial for Baseline](https://github.com/iiasa/central-asia-storage/blob/main/scripts/interface_baseline.ipynb)) by using the data stored
+[here](https://github.com/iiasa/central-asia-storage/blob/main/data).
+- Model renewable energy policies in the region ([see tutorial for renewable policies](https://github.com/iiasa/central-asia-storage/blob/main/scripts/interface_policy.ipynb)).
+- Model the functionality of seasonal pumped hydropower storage (SPHS) in the region ([see tutorial for Pumpedhydro](https://github.com/iiasa/central-asia-storage/blob/main/scripts/interface_pumpedhydro.ipynb)).
+- Represent carbon emissions targets in the region ([see here](https://github.com/iiasa/central-asia-storage/blob/main/scripts/interface_pumpedhydro.ipynb)).
 - Analyze and visualize the scenarios mentioned above, and other scenarios that interest you.
 
 Please go through the tutorials in the order mentioned above. These tutorials are designed
