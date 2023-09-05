@@ -51,7 +51,7 @@ for other energy carriers in the data presented for policy makers, as these are 
 In this repository, there are data and scripts that can help you for:
 - Building the water-energy model of Central Asia ([see tutorial for Baseline](https://github.com/iiasa/central-asia-storage/scripts/interface_baseline.ipynb)) by using the data stored
 [here](https://github.com/iiasa/central-asia-storage/data).
-- Model renewable energy policies in the region ([see tutorial for Renewables](https://github.com/iiasa/central-asia-storage/scripts/interface_renewable.ipynb)).
+- Model renewable energy policies in the region ([see tutorial for Renewables](https://github.com/iiasa/central-asia-storage/scripts/interface_policy.ipynb)).
 - Model the functionality of seasonal pumped hydropower storage (SPHS) in the region ([see tutorial for Pumpedhydro](https://github.com/iiasa/central-asia-storage/scripts/interface_pumpedhydro.ipynb)).
 - Represent carbon emissions targets in the region ([see here](https://github.com/iiasa/central-asia-storage/scripts/interface_pumpedhydro.ipynb)).
 - Analyze and visualize the scenarios mentioned above, and other scenarios that interest you.
